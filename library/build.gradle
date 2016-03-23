@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 
-def version = '1.0.0'
+def version = '1.1.0'
 
 ext {
     PUBLISH_GROUP_ID = 'com.thesurix.gesturerecycler'
@@ -10,7 +10,7 @@ ext {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         minSdkVersion 15

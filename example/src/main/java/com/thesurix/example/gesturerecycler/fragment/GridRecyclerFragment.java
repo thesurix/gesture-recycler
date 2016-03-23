@@ -4,20 +4,18 @@ import com.thesurix.example.gesturerecycler.R;
 import com.thesurix.example.gesturerecycler.adapter.MonthsAdapter;
 import com.thesurix.example.gesturerecycler.model.MonthItem;
 import com.thesurix.gesturerecycler.GestureAdapter;
-import com.thesurix.gesturerecycler.GestureListener;
-import com.thesurix.gesturerecycler.GestureTouchHelperCallback;
+import com.thesurix.gesturerecycler.GestureManager;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.MenuItem;
 import android.view.View;
 
 public class GridRecyclerFragment extends BaseFragment {
 
-    private GestureTouchHelperCallback mTouchHelperCallback;
+    private GestureManager mGestureManager;
 
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
@@ -39,15 +37,11 @@ public class GridRecyclerFragment extends BaseFragment {
             }
         });
 
-        mTouchHelperCallback = new GestureTouchHelperCallback(adapter);
-        mTouchHelperCallback.setSwipeEnabled(true);
-        mTouchHelperCallback.setLongPressDragEnabled(true);
-        mTouchHelperCallback.setGestureFlagsForLayout(manager);
+        mGestureManager = new GestureManager.Builder(mRecyclerView)
+                .setSwipeEnabled(true)
+                .setLongPressDragEnabled(true)
+                .build();
 
-        final ItemTouchHelper touchHelper = new ItemTouchHelper(mTouchHelperCallback);
-        touchHelper.attachToRecyclerView(mRecyclerView);
-
-        adapter.setGestureListener(new GestureListener(touchHelper));
         adapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>() {
             @Override
             public void onItemRemoved(final MonthItem item, final int position) {
@@ -64,7 +58,7 @@ public class GridRecyclerFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         if (item.getItemId() == R.id.recycler_drag_menu) {
-            mTouchHelperCallback.setManualDragEnabled(!mTouchHelperCallback.isManualDragEnabled());
+            mGestureManager.setManualDragEnabled(!mGestureManager.isManualDragEnabled());
         }
         return super.onOptionsItemSelected(item);
     }

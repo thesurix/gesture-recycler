@@ -1,6 +1,7 @@
 [ ![Download](https://api.bintray.com/packages/thesurix/maven/gesture-recycler/images/download.svg) ](https://bintray.com/thesurix/maven/gesture-recycler/_latestVersion)
 <a href="https://opensource.org/licenses/Apache-2.0" target="_blank"><img src="https://img.shields.io/badge/License-Apache_v2.0-blue.svg?style=flat"/></a> 
 [![API](https://img.shields.io/badge/API-15%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=15)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-gesture--recycler-green.svg?style=true)](https://android-arsenal.com/details/1/3317)
 
 # Gesture Recycler
 This library provides swipe & drag and drop support for RecyclerView. Based on great example from [Android-ItemTouchHelper-Demo](https://github.com/iPaulPro/Android-ItemTouchHelper-Demo).
@@ -21,7 +22,7 @@ To use this library in your android project, just simply add the following depen
 
 ```sh
 dependencies {
-    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.0.0'
+    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.1.0'
 }
 ```
 
@@ -41,29 +42,17 @@ recyclerView.setAdapter(adapter);
 ```
 To enable swipe/drag and drop support:
 ```java
-final GestureTouchHelperCallback touchHelperCallback = new GestureTouchHelperCallback(adapter);
-// Enable swipe
-touchHelperCallback.setSwipeEnabled(true);
-// Enable long press drag and drop 
-touchHelperCallback.setLongPressDragEnabled(true);
-
-// Sets predefined swipe & drag and drop flags based on layout manager type
-touchHelperCallback.setGestureFlagsForLayout(manager);
-
-//or use your own
-touchHelperCallback.setDragFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN);
-touchHelperCallback.setSwipeFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
-
-final ItemTouchHelper touchHelper = new ItemTouchHelper(touchHelperCallback);
-touchHelper.attachToRecyclerView(recyclerView); 
-```
-
-To enable manual drag:
-```java
-// Enable manual drag, you need to provide View inside your ViewHolder
-touchHelperCallback.setManualDragEnabled(true);
-// Attach default listener for drag triggering
-adapter.setGestureListener(new GestureListener(touchHelper));
+GestureManager gestureManager = new GestureManager.Builder(mRecyclerView)
+                 // Enable swipe
+                .setSwipeEnabled(true)
+                 // Enable long press drag and drop 
+                .setLongPressDragEnabled(true)
+                 // Enable manual drag from the begging, you need to provide View inside your GestureViewHolder
+                .setManualDragEnabled(true)
+                 // Use custom gesture flags
+                 // Do not use this method if you want predefined flagsfor RecyclerView layout manager 
+                .setGestureFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, ItemTouchHelper.UP | ItemTouchHelper.DOWN)
+                .build();
 ```
 
 Any callbacks? Sure:
@@ -88,12 +77,38 @@ adapter.remove(5);
 // This will interrupt pending animations
 adapter.setData(months)
 ```
+## Old way (v1.0.0):
+To enable swipe/drag and drop support:
+```java
+final GestureTouchHelperCallback touchHelperCallback = new GestureTouchHelperCallback(adapter);
+// Enable swipe
+touchHelperCallback.setSwipeEnabled(true);
+// Enable long press drag and drop 
+touchHelperCallback.setLongPressDragEnabled(true);
 
+// Sets predefined swipe & drag and drop flags based on layout manager type
+touchHelperCallback.setGestureFlagsForLayout(manager);
+
+//or use your own
+touchHelperCallback.setDragFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN);
+touchHelperCallback.setSwipeFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+
+final ItemTouchHelper touchHelper = new ItemTouchHelper(touchHelperCallback);
+touchHelper.attachToRecyclerView(recyclerView); 
+```
+To enable manual drag:
+```java
+// Enable manual drag, you need to provide View inside your GestureViewHolder
+touchHelperCallback.setManualDragEnabled(true);
+// Attach default listener for drag triggering
+adapter.setGestureListener(new GestureListener(touchHelper));
+```
 # Help
 See examples.
 
 # To do
 * item click listener
+* undo?
 * empty view?
 * tests?
 
