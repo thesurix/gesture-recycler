@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion compileSdk
-    buildToolsVersion buildTools
 
     defaultConfig {
         applicationId "com.thesurix.example.gesturerecycler"
@@ -32,6 +31,6 @@ dependencies {
     implementation supportDependencies.appCompat
     implementation supportDependencies.design
 
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 
 }

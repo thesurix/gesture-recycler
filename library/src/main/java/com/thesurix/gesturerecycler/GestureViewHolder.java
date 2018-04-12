@@ -1,5 +1,6 @@
 package com.thesurix.gesturerecycler;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,10 +9,27 @@ import android.view.View;
  * Base view holder class for gesture compatible items.
  * @author thesurix
  */
-public abstract class GestureViewHolder extends RecyclerView.ViewHolder {
+public abstract class GestureViewHolder<T> extends RecyclerView.ViewHolder {
 
     public GestureViewHolder(final View itemView) {
         super(itemView);
+    }
+
+    /**
+     * This method delegates release logic from
+     * {@link RecyclerView.Adapter#onViewRecycled(RecyclerView.ViewHolder)} into your
+     * {@code ViewHolder}. It's good place for release some listeners or something what have high
+     * in-memory weight (high resolution bitmap etc.) from a views
+     * */
+    public void unbindHolder() {
+    }
+
+    /**
+     * Simply getter for context from {@link #itemView}
+     * @return context from
+     * */
+    public Context getContext() {
+        return itemView.getContext();
     }
 
     /**
@@ -46,7 +64,7 @@ public abstract class GestureViewHolder extends RecyclerView.ViewHolder {
      * Called only when getDraggableView() returns valid view.
      */
     public void showDraggableView() {
-        getDraggableView().setVisibility(View.VISIBLE);
+        if (getDraggableView() != null) getDraggableView().setVisibility(View.VISIBLE);
     }
 
     /**
@@ -54,18 +72,20 @@ public abstract class GestureViewHolder extends RecyclerView.ViewHolder {
      * Called only when getDraggableView() returns valid view.
      */
     public void hideDraggableView() {
-        getDraggableView().setVisibility(View.GONE);
+        if (getDraggableView() != null) getDraggableView().setVisibility(View.GONE);
     }
 
     /**
      * Indicates that view is selected.
      */
-    public void onItemSelect() {}
+    public void onItemSelect() {
+    }
 
     /**
      * Indicates that view has no selection.
      */
-    public void onItemClear() {}
+    public void onItemClear() {
+    }
 
     /**
      * Returns information if we can drag this view.
@@ -78,4 +98,13 @@ public abstract class GestureViewHolder extends RecyclerView.ViewHolder {
      * @return true if swipeable, false otherwise
      */
     public abstract boolean canSwipe();
+
+    /**
+     * This method delegates bind logic from
+     * {@link RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder, int)} into your
+     * {@code ViewHolder}
+     *
+     * @param t model taken by position of holder from adapter's data collection
+     * */
+    public abstract void bindHolder(T t);
 }

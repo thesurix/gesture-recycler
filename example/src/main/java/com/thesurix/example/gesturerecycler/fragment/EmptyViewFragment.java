@@ -1,14 +1,7 @@
 package com.thesurix.example.gesturerecycler.fragment;
 
-import com.thesurix.example.gesturerecycler.R;
-import com.thesurix.example.gesturerecycler.adapter.MonthsAdapter;
-import com.thesurix.example.gesturerecycler.callback.MonthDiffCallback;
-import com.thesurix.example.gesturerecycler.model.Month;
-import com.thesurix.example.gesturerecycler.model.MonthItem;
-import com.thesurix.gesturerecycler.GestureAdapter;
-import com.thesurix.gesturerecycler.GestureManager;
-
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +12,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.thesurix.example.gesturerecycler.R;
+import com.thesurix.example.gesturerecycler.adapter.MonthsAdapter;
+import com.thesurix.example.gesturerecycler.callback.MonthDiffCallback;
+import com.thesurix.example.gesturerecycler.model.Month;
+import com.thesurix.example.gesturerecycler.model.MonthItem;
+import com.thesurix.gesturerecycler.GestureAdapter;
+import com.thesurix.gesturerecycler.GestureManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,13 +38,12 @@ public class EmptyViewFragment extends BaseFragment {
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(manager);
 
-        mAdapter = new MonthsAdapter(getContext(), R.layout.linear_item_with_background);
+        mAdapter = new MonthsAdapter(R.layout.linear_item_with_background);
         mAdapter.setData(getMonths());
         mAdapter.setUndoSize(2);
         mAdapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>() {

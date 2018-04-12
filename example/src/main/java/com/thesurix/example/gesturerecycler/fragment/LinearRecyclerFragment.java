@@ -1,5 +1,14 @@
 package com.thesurix.example.gesturerecycler.fragment;
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MenuItem;
+import android.view.View;
+
 import com.thesurix.example.gesturerecycler.R;
 import com.thesurix.example.gesturerecycler.adapter.MonthsAdapter;
 import com.thesurix.example.gesturerecycler.model.MonthItem;
@@ -8,25 +17,15 @@ import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureManager;
 import com.thesurix.gesturerecycler.RecyclerItemTouchListener;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.MenuItem;
-import android.view.View;
-
 public class LinearRecyclerFragment extends BaseFragment {
 
     @Override
-    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         final LinearLayoutManager manager = new LinearLayoutManager(getContext());
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(manager);
 
-        final MonthsAdapter adapter = new MonthsAdapter(getContext(), R.layout.linear_item);
+        final MonthsAdapter adapter = new MonthsAdapter(R.layout.linear_item);
         adapter.setData(getMonths());
 
         mRecyclerView.setAdapter(adapter);

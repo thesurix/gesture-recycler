@@ -1,8 +1,5 @@
 package com.thesurix.example.gesturerecycler.adapter;
 
-import com.thesurix.example.gesturerecycler.R;
-import com.thesurix.gesturerecycler.GestureViewHolder;
-
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.support.annotation.Nullable;
@@ -11,11 +8,18 @@ import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.thesurix.example.gesturerecycler.R;
+import com.thesurix.example.gesturerecycler.model.Month;
+import com.thesurix.example.gesturerecycler.model.MonthItem;
+import com.thesurix.gesturerecycler.GestureViewHolder;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MonthViewHolder extends GestureViewHolder {
+public class MonthViewHolder extends GestureViewHolder<MonthItem> {
 
     private static final int SELECT_DURATION_IN_MS = 250;
 
@@ -39,6 +43,19 @@ public class MonthViewHolder extends GestureViewHolder {
     public MonthViewHolder(final View view) {
         super(view);
         ButterKnife.bind(this, view);
+    }
+
+    @Override
+    public void bindHolder(MonthItem monthItem) {
+        if (monthItem.getType() == MonthItem.MonthItemType.MONTH) {
+            final Month month = (Month) monthItem;
+            mMonthText.setText(month.getName());
+
+            Glide.with(getContext())
+                    .load(month.getDrawableId())
+                    .apply(RequestOptions.centerCropTransform())
+                    .into(mMonthPicture);
+        }
     }
 
     @Nullable

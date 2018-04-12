@@ -2,8 +2,7 @@ ext {
     minSdk = 15
     compileSdk = 27
     targetSdk = 27
-    buildTools = '27.0.3'
-    supportLibrary = '27.0.2'
+    supportLibrary = '27.1.1'
     butterKnife = '8.8.1'
 
     viewDependencies = [

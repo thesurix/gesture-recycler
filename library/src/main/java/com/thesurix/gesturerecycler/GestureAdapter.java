@@ -1,5 +1,11 @@
 package com.thesurix.gesturerecycler;
 
+import android.annotation.SuppressLint;
+import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
+import android.view.View;
+
 import com.thesurix.gesturerecycler.transactions.AdapterTransaction;
 import com.thesurix.gesturerecycler.transactions.AddTransaction;
 import com.thesurix.gesturerecycler.transactions.InsertTransaction;
@@ -7,13 +13,6 @@ import com.thesurix.gesturerecycler.transactions.MoveTransaction;
 import com.thesurix.gesturerecycler.transactions.RemoveTransaction;
 import com.thesurix.gesturerecycler.transactions.RevertReorderTransaction;
 import com.thesurix.gesturerecycler.util.FixedSizeArrayDequeue;
-
-import android.annotation.SuppressLint;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +23,7 @@ import java.util.List;
  * Base adapter for gesture recognition, extends this to provide own implementation. T is the data type, K is the ViewHolder type.
  * @author thesurix
  */
-public abstract class GestureAdapter<T, K extends GestureViewHolder> extends RecyclerView.Adapter<K> {
+public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends RecyclerView.Adapter<K> {
 
     /** Listener for data changes inside adapter */
     public interface OnDataChangeListener<T> {
@@ -106,7 +105,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
                     @SuppressLint("ClickableViewAccessibility")
                     @Override
                     public boolean onTouch(final View view, final MotionEvent motionEvent) {
-                        if (MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
+                        if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
                             if (mGestureListener != null) {
                                 mGestureListener.onStartDrag(holder);
                             }
@@ -119,6 +118,12 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
                 holder.hideDraggableView();
             }
         }
+        holder.bindHolder(getItem(position));
+    }
+
+    @Override
+    public void onViewRecycled(K holder) {
+        holder.unbindHolder();
     }
 
     @Override
@@ -143,7 +148,8 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
 
     /**
      * Sets adapter data. This method will interrupt pending animations.
-     * Use {@link #add(T)}, {@link #remove(int)} or {@link #insert(T, int)} or {@link #setData(List, DiffUtil.Callback)} to achieve smooth animations.
+     * Use {@link #add(T)}, {@link #remove(int)} or {@link #insert(T, int)}
+     * or {@link #setData(List, DiffUtil.Callback)} to achieve smooth animations.
      * @param data data to show
      */
     public void setData(final List<T> data) {
