@@ -37,32 +37,38 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
      * Constructs callback object based on passed adapter.
      * @param adapter adapter
      */
-    public GestureTouchHelperCallback(final GestureAdapter adapter) {
+    public GestureTouchHelperCallback(GestureAdapter adapter) {
         mGestureAdapter = adapter;
     }
 
     @Override
-    public int getMovementFlags(final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder) {
-        final GestureViewHolder holder = (GestureViewHolder) viewHolder;
-        return makeMovementFlags(holder.canDrag() ? mDragFlags : 0, holder.canSwipe() ? mSwipeFlags : 0);
+    public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+        GestureViewHolder holder = (GestureViewHolder) viewHolder;
+        return makeMovementFlags(holder.canDrag() ? mDragFlags : 0,
+                holder.canSwipe() ? mSwipeFlags : 0);
     }
 
     @Override
-    public boolean onMove(final RecyclerView recyclerView, final RecyclerView.ViewHolder source, final RecyclerView.ViewHolder target) {
+    public boolean onMove(
+            RecyclerView recyclerView,
+            RecyclerView.ViewHolder source,
+            RecyclerView.ViewHolder target
+    ) {
         return mGestureAdapter.onItemMove(source.getAdapterPosition(), target.getAdapterPosition());
     }
 
     @Override
-    public void onSwiped(final RecyclerView.ViewHolder viewHolder, final int direction) {
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         mGestureAdapter.onItemDismissed(viewHolder.getAdapterPosition());
     }
 
     @Override
-    public void onSelectedChanged(final RecyclerView.ViewHolder viewHolder, final int actionState) {
+    public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         super.onSelectedChanged(viewHolder, actionState);
-        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE && viewHolder instanceof GestureViewHolder) {
-            final GestureViewHolder itemViewHolder = (GestureViewHolder) viewHolder;
-            final View backgroundView = itemViewHolder.getBackgroundView();
+        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE
+                && viewHolder instanceof GestureViewHolder) {
+            GestureViewHolder itemViewHolder = (GestureViewHolder) viewHolder;
+            View backgroundView = itemViewHolder.getBackgroundView();
             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && backgroundView != null) {
                 backgroundView.setVisibility(View.VISIBLE);
             }
@@ -72,30 +78,37 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public void onChildDraw(final Canvas c, final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder, final float dX, final float dY,
-            final int actionState, final boolean isCurrentlyActive) {
+    public void onChildDraw(
+            Canvas c, RecyclerView recyclerView,
+            RecyclerView.ViewHolder viewHolder,
+            float dX,
+            float dY,
+            int actionState,
+            boolean isCurrentlyActive
+    ) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-            final View foregroundView = ((GestureViewHolder) viewHolder).getForegroundView();
-            getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive);
+            View foregroundView = ((GestureViewHolder) viewHolder).getForegroundView();
+            getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY, actionState,
+                    isCurrentlyActive);
         } else {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     }
 
     @Override
-    public void clearView(final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder) {
+    public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
         mGestureAdapter.onItemMoved();
         if (viewHolder instanceof GestureViewHolder) {
-            final GestureViewHolder itemViewHolder = (GestureViewHolder) viewHolder;
+            GestureViewHolder itemViewHolder = (GestureViewHolder) viewHolder;
             itemViewHolder.onItemClear();
 
-            final View backgroundView = itemViewHolder.getBackgroundView();
+            View backgroundView = itemViewHolder.getBackgroundView();
             if (backgroundView != null) {
                 backgroundView.setVisibility(View.GONE);
             }
 
-            final View foregroundView = itemViewHolder.getForegroundView();
+            View foregroundView = itemViewHolder.getForegroundView();
             getDefaultUIUtil().clearView(foregroundView);
         }
     }
@@ -123,7 +136,7 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
      * Manual drag is disabled by default.
      * @param enabled true to enable, false to disable
      */
-    public void setManualDragEnabled(final boolean enabled) {
+    public void setManualDragEnabled(boolean enabled) {
         mIsManualDragEnabled = enabled;
         //update adapter to enable/disable manual drag spawns
         mGestureAdapter.allowManualDrag(mIsManualDragEnabled);
@@ -134,7 +147,7 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
      * Swipe is disabled by default.
      * @param enabled true to enable, false to disable
      */
-    public void setSwipeEnabled(final boolean enabled) {
+    public void setSwipeEnabled(boolean enabled) {
         mIsSwipeEnabled = enabled;
     }
 
@@ -143,7 +156,7 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
      * Long press drag is disabled by default.
      * @param enabled true to enable, false to disable
      */
-    public void setLongPressDragEnabled(final boolean enabled) {
+    public void setLongPressDragEnabled(boolean enabled) {
         mIsLongPressDragEnabled = enabled;
     }
 
@@ -151,7 +164,7 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
      * Sets predefined drag flags for RecyclerView layout.
      * @param layout type of the RecyclerView layout
      */
-    public void setDragFlagsForLayout(final RecyclerView.LayoutManager layout) {
+    public void setDragFlagsForLayout(RecyclerView.LayoutManager layout) {
         if (layout instanceof GridLayoutManager) {
             mDragFlags = GRID.getDragFlags(layout);
         } else if (layout instanceof LinearLayoutManager) {
@@ -167,7 +180,7 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
      * Sets predefined swipe flags for RecyclerView layout.
      * @param layout type of the RecyclerView layout
      */
-    public void setSwipeFlagsForLayout(final RecyclerView.LayoutManager layout) {
+    public void setSwipeFlagsForLayout(RecyclerView.LayoutManager layout) {
         if (layout instanceof GridLayoutManager) {
             mSwipeFlags = GRID.getSwipeFlags(layout);
         } else if (layout instanceof LinearLayoutManager) {
@@ -184,7 +197,7 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
      * See {@link ItemTouchHelper} flags.
      * @param flags flags for drag gesture
      */
-    public void setDragFlags(final int flags) {
+    public void setDragFlags(int flags) {
         mDragFlags = flags;
     }
 
@@ -193,7 +206,7 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
      * See {@link ItemTouchHelper} flags.
      * @param flags flags for swipe gesture
      */
-    public void setSwipeFlags(final int flags) {
+    public void setSwipeFlags(int flags) {
         mSwipeFlags = flags;
     }
 }

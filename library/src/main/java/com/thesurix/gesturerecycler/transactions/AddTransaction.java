@@ -12,7 +12,7 @@ public class AddTransaction<T> implements AdapterTransaction {
     private final GestureAdapter<T, ? extends GestureViewHolder> mAdapter;
     private final T mItem;
 
-    public AddTransaction(final GestureAdapter<T, ? extends GestureViewHolder> adapter, final T item) {
+    public AddTransaction(GestureAdapter<T, ? extends GestureViewHolder> adapter, T item) {
         mAdapter = adapter;
         mItem = item;
     }
@@ -28,9 +28,9 @@ public class AddTransaction<T> implements AdapterTransaction {
 
     @Override
     public boolean revert() {
-        final int dataSize = mAdapter.getItemCount();
-        final T item = mAdapter.getData().remove(dataSize - 1);
-        final boolean success = item != null;
+        int dataSize = mAdapter.getItemCount();
+        T item = mAdapter.getData().remove(dataSize - 1);
+        boolean success = item != null;
         if (success) {
             mAdapter.notifyItemRemoved(dataSize);
         }

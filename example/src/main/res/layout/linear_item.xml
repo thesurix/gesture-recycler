@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardBackgroundColor="@android:color/white"
-    card_view:cardCornerRadius="@dimen/card_corner_radius"
-    card_view:cardElevation="@dimen/card_elevation"
-    app:cardUseCompatPadding="true"
-    app:cardPreventCornerOverlap="false">
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/card_elevation"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,11 +20,11 @@
             android:id="@+id/month_text"
             android:layout_width="@dimen/linear_text_width"
             android:layout_height="match_parent"
+            android:background="@color/indigo_500"
+            android:gravity="center_vertical"
             android:paddingLeft="@dimen/linear_text_padding"
             android:paddingRight="@dimen/linear_text_padding"
-            android:textColor="@android:color/white"
-            android:background="@color/indigo_500"
-            android:gravity="center_vertical"/>
+            android:textColor="@android:color/white"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -32,16 +33,20 @@
             <ImageView
                 android:id="@+id/month_image"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                tools:ignore="ContentDescription"/>
 
             <ImageView
                 android:id="@+id/mont_drag"
                 android:layout_width="@dimen/drag_view_size"
                 android:layout_height="@dimen/drag_view_size"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/drag_view_margin"
                 android:layout_marginRight="@dimen/drag_view_margin"
                 android:src="@drawable/ic_fingerprint"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
+                tools:ignore="ContentDescription"/>
         </RelativeLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

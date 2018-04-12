@@ -1,6 +1,8 @@
 package com.thesurix.gesturerecycler;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
@@ -20,10 +22,12 @@ import java.util.Deque;
 import java.util.List;
 
 /**
- * Base adapter for gesture recognition, extends this to provide own implementation. T is the data type, K is the ViewHolder type.
+ * Base adapter for gesture recognition, extends this to provide own implementation. T is the data
+ * type, K is the ViewHolder type.
  * @author thesurix
  */
-public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends RecyclerView.Adapter<K> {
+public abstract class GestureAdapter<T, K extends GestureViewHolder<T>>
+        extends RecyclerView.Adapter<K> {
 
     /** Listener for data changes inside adapter */
     public interface OnDataChangeListener<T> {
@@ -33,7 +37,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
          * @param item removed item
          * @param position removed position
          */
-        void onItemRemoved(T item, int position);
+        void onItemRemoved(@NonNull T item, int position);
 
         /**
          * Called when item has been reordered by drag gesture.
@@ -41,7 +45,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
          * @param fromPos reorder start position
          * @param toPos reorder end position
          */
-        void onItemReorder(T item, int fromPos, int toPos);
+        void onItemReorder(@NonNull T item, int fromPos, int toPos);
     }
 
     /** Listener for gestures */
@@ -70,33 +74,34 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
     private OnGestureListener mGestureListener;
     private OnDataChangeListener<T> mDataChangeListener;
     private final EmptyViewDataObserver mEmptyViewDataObserver = new EmptyViewDataObserver();
-    private final View.OnAttachStateChangeListener mAttachListener = new View.OnAttachStateChangeListener() {
+    private final View.OnAttachStateChangeListener mAttachListener =
+            new View.OnAttachStateChangeListener() {
 
-        private boolean isRegistered;
+                private boolean isRegistered;
 
-        @Override
-        public void onViewAttachedToWindow(final View v) {
-            if (!isRegistered) {
-                isRegistered = true;
-                registerAdapterDataObserver(mEmptyViewDataObserver);
-            }
-        }
+                @Override
+                public void onViewAttachedToWindow(View v) {
+                    if (!isRegistered) {
+                        isRegistered = true;
+                        registerAdapterDataObserver(mEmptyViewDataObserver);
+                    }
+                }
 
-        @Override
-        public void onViewDetachedFromWindow(final View v) {
-            if (isRegistered) {
-                isRegistered = false;
-                unregisterAdapterDataObserver(mEmptyViewDataObserver);
-            }
-            resetTransactions();
-        }
-    };
+                @Override
+                public void onViewDetachedFromWindow(View v) {
+                    if (isRegistered) {
+                        isRegistered = false;
+                        unregisterAdapterDataObserver(mEmptyViewDataObserver);
+                    }
+                    resetTransactions();
+                }
+            };
 
     /** Collection for adapter's data */
     private final List<T> mData = new ArrayList<>();
 
     @Override
-    public void onBindViewHolder(final K holder, final int position) {
+    public void onBindViewHolder(@NonNull final K holder, int position) {
         if (holder.getDraggableView() != null) {
             if (mIsManualDragAllowed && holder.canDrag()) {
                 holder.showDraggableView();
@@ -104,7 +109,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
 
                     @SuppressLint("ClickableViewAccessibility")
                     @Override
-                    public boolean onTouch(final View view, final MotionEvent motionEvent) {
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
                         if (motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
                             if (mGestureListener != null) {
                                 mGestureListener.onStartDrag(holder);
@@ -122,7 +127,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
     }
 
     @Override
-    public void onViewRecycled(K holder) {
+    public void onViewRecycled(@NonNull K holder) {
         holder.unbindHolder();
     }
 
@@ -132,14 +137,14 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
     }
 
     @Override
-    public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         mEmptyViewDataObserver.setRecyclerView(recyclerView);
         recyclerView.addOnAttachStateChangeListener(mAttachListener);
     }
 
     @Override
-    public void onDetachedFromRecyclerView(final RecyclerView recyclerView) {
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
         mEmptyViewDataObserver.setRecyclerView(null);
         recyclerView.removeOnAttachStateChangeListener(mAttachListener);
@@ -152,7 +157,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
      * or {@link #setData(List, DiffUtil.Callback)} to achieve smooth animations.
      * @param data data to show
      */
-    public void setData(final List<T> data) {
+    public void setData(List<T> data) {
         setData(data, null);
     }
 
@@ -161,12 +166,12 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
      * @param data data to show
      * @param diffCallback diff callback to manage internal data changes
      */
-    public void setData(final List<T> data, final DiffUtil.Callback diffCallback) {
+    public void setData(List<T> data, DiffUtil.Callback diffCallback) {
         if (diffCallback == null) {
             setNewData(data);
             notifyDataSetChanged();
         } else {
-            final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
             setNewData(data);
             diffResult.dispatchUpdatesTo(this);
         }
@@ -197,7 +202,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
      * @param position item's position
      * @return item
      */
-    public T getItem(final int position) {
+    public T getItem(int position) {
         return mData.get(position);
     }
 
@@ -206,9 +211,9 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
      * @param item item to add
      * @return true if added, false otherwise
      */
-    public boolean add(final T item) {
-        final AdapterTransaction addTransaction = new AddTransaction<>(this, item);
-        final boolean success = addTransaction.perform();
+    public boolean add(@NonNull T item) {
+        AdapterTransaction addTransaction = new AddTransaction<>(this, item);
+        boolean success = addTransaction.perform();
 
         mTransactions.offer(addTransaction);
         return success;
@@ -219,9 +224,9 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
      * @param position item's position
      * @return true if removed, false otherwise
      */
-    public boolean remove(final int position) {
-        final AdapterTransaction removeTransaction = new RemoveTransaction<>(this, position);
-        final boolean success = removeTransaction.perform();
+    public boolean remove(int position) {
+        AdapterTransaction removeTransaction = new RemoveTransaction<>(this, position);
+        boolean success = removeTransaction.perform();
 
         mTransactions.offer(removeTransaction);
         return success;
@@ -232,8 +237,8 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
      * @param item item to insert
      * @param position position for the item
      */
-    public void insert(final T item, final int position) {
-        final AdapterTransaction insertTransaction = new InsertTransaction<>(this, item, position);
+    public void insert(@NonNull T item, int position) {
+        AdapterTransaction insertTransaction = new InsertTransaction<>(this, item, position);
         insertTransaction.perform();
 
         mTransactions.offer(insertTransaction);
@@ -245,9 +250,10 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
      * @param toPosition item's new position
      * @return true if moved, false otherwise
      */
-    public boolean move(final int fromPosition, final int toPosition) {
-        final AdapterTransaction moveTransaction = new MoveTransaction<>(this, fromPosition, toPosition);
-        final boolean success = moveTransaction.perform();
+    public boolean move(int fromPosition, int toPosition) {
+        AdapterTransaction moveTransaction = new MoveTransaction<>(this, fromPosition,
+                toPosition);
+        boolean success = moveTransaction.perform();
 
         mTransactions.offer(moveTransaction);
         return success;
@@ -258,15 +264,16 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
      * Pass null to disable empty view feature.
      * @param emptyView view to show
      */
-    public void setEmptyView(final View emptyView) {
+    public void setEmptyView(@Nullable View emptyView) {
         mEmptyViewDataObserver.setEmptyView(emptyView);
     }
 
     /**
-     * Sets undo stack size. If undo stack is full, the oldest action will be removed (default size is 1).
+     * Sets undo stack size. If undo stack is full, the oldest action will be removed
+     * (default size is 1).
      * @param size undo actions size
      */
-    public void setUndoSize(final int size) {
+    public void setUndoSize(int size) {
         if (size < 0) {
             throw new IllegalArgumentException("Stack can not have negative size.");
         }
@@ -287,7 +294,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
      * Sets adapter data change listener.
      * @param listener data change listener
      */
-    public void setDataChangeListener(final OnDataChangeListener<T> listener) {
+    public void setDataChangeListener(OnDataChangeListener<T> listener) {
         mDataChangeListener = listener;
     }
 
@@ -295,7 +302,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
      * Sets adapter gesture listener.
      * @param listener gesture listener
      */
-    void setGestureListener(final OnGestureListener listener) {
+    void setGestureListener(@Nullable OnGestureListener listener) {
         mGestureListener = listener;
     }
 
@@ -303,9 +310,9 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
      * Dismisses item from the given position.
      * @param position item's position
      */
-    void onItemDismissed(final int position) {
-        final T removed = mData.get(position);
-        final boolean wasRemoved = remove(position);
+    void onItemDismissed(int position) {
+        T removed = mData.get(position);
+        boolean wasRemoved = remove(position);
         if (wasRemoved && mDataChangeListener != null) {
             mDataChangeListener.onItemRemoved(removed, position);
         }
@@ -317,7 +324,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
      * @param toPosition end position
      * @return returns true if transition is successful
      */
-    boolean onItemMove(final int fromPosition, final int toPosition) {
+    boolean onItemMove(int fromPosition, int toPosition) {
         if (mSwappedItem == null) {
             mStartDragPos = fromPosition;
             mSwappedItem = mData.get(fromPosition);
@@ -325,12 +332,12 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
         mStopDragPos = toPosition;
 
         // Steps bigger than one we have to swap manually in right order
-        final int jumpSize = Math.abs(toPosition - fromPosition);
+        int jumpSize = Math.abs(toPosition - fromPosition);
         if (jumpSize > 1) {
-            final int sign = Integer.signum(toPosition - fromPosition);
+            int sign = Integer.signum(toPosition - fromPosition);
             int startPos = fromPosition;
             for (int i = 0; i < jumpSize; i++) {
-                final int endPos = startPos + sign;
+                int endPos = startPos + sign;
                 Collections.swap(mData, startPos, endPos);
                 startPos += sign;
             }
@@ -350,7 +357,8 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
                 mDataChangeListener.onItemReorder(mSwappedItem, mStartDragPos, mStopDragPos);
             }
 
-            final AdapterTransaction revertReorderTransaction = new RevertReorderTransaction<>(this, mStartDragPos, mStopDragPos);
+            AdapterTransaction revertReorderTransaction = new RevertReorderTransaction<>(this,
+                    mStartDragPos, mStopDragPos);
             mTransactions.offer(revertReorderTransaction);
             mSwappedItem = null;
             mStopDragPos = INVALID_DRAG_POS;
@@ -362,12 +370,12 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>> extends 
      * To allow manual drags provide draggable view, see {@link GestureViewHolder}.
      * @param allowState true to enable, false to disable
      */
-    void allowManualDrag(final boolean allowState) {
+    void allowManualDrag(boolean allowState) {
         mIsManualDragAllowed = allowState;
         notifyDataSetChanged();
     }
 
-    private void setNewData(final List<T> data) {
+    private void setNewData(List<T> data) {
         mData.clear();
         mData.addAll(data);
     }

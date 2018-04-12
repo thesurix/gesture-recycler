@@ -19,7 +19,7 @@ import com.thesurix.gesturerecycler.RecyclerItemTouchListener;
 public class GridRecyclerFragment extends BaseFragment {
 
     @Override
-    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         final GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
@@ -29,31 +29,37 @@ public class GridRecyclerFragment extends BaseFragment {
         final MonthsAdapter adapter = new MonthsAdapter(R.layout.grid_item);
         adapter.setData(getMonths());
         mRecyclerView.setAdapter(adapter);
-        mRecyclerView.addOnItemTouchListener(new RecyclerItemTouchListener<>(new DefaultItemClickListener<MonthItem>() {
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemTouchListener<>(
+                new DefaultItemClickListener<MonthItem>() {
 
-            @Override
-            public boolean onItemClick(final MonthItem item, final int position) {
-                Snackbar.make(view, "Click event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-                return true;
-            }
+                    @Override
+                    public boolean onItemClick(@NonNull MonthItem item, int position) {
+                        Snackbar.make(view, "Click event on the " + position
+                                + " position", Snackbar.LENGTH_SHORT).show();
+                        return true;
+                    }
 
-            @Override
-            public void onItemLongPress(final MonthItem item, final int position) {
-                Snackbar.make(view, "Long press event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-            }
+                    @Override
+                    public void onItemLongPress(@NonNull MonthItem item, int position) {
+                        Snackbar.make(view, "Long press event on the " + position
+                                + " position", Snackbar.LENGTH_SHORT).show();
+                    }
 
-            @Override
-            public boolean onDoubleTap(final MonthItem item, final int position) {
-                Snackbar.make(view, "Double tap event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
-                return true;
-            }
-        }));
+                    @Override
+                    public boolean onDoubleTap(@NonNull MonthItem item, int position) {
+                        Snackbar.make(view, "Double tap event on the " + position
+                                + " position", Snackbar.LENGTH_SHORT).show();
+                        return true;
+                    }
+                }));
 
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
-            public int getSpanSize(final int position) {
-                final MonthItem item = adapter.getItem(position);
-                return item.getType() == MonthItem.MonthItemType.HEADER ? manager.getSpanCount() : 1;
+            public int getSpanSize(int position) {
+                MonthItem item = adapter.getItem(position);
+                return item.getType() == MonthItem.MonthItemType.HEADER
+                        ? manager.getSpanCount()
+                        : 1;
             }
         });
 
@@ -64,19 +70,21 @@ public class GridRecyclerFragment extends BaseFragment {
 
         adapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>() {
             @Override
-            public void onItemRemoved(final MonthItem item, final int position) {
-                Snackbar.make(view, "Month removed from position " + position, Snackbar.LENGTH_SHORT).show();
+            public void onItemRemoved(@NonNull MonthItem item, int position) {
+                Snackbar.make(view, "Month removed from position "
+                        + position, Snackbar.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onItemReorder(final MonthItem item, final int fromPos, final int toPos) {
-                Snackbar.make(view, "Month moved from position " + fromPos + " to " + toPos, Snackbar.LENGTH_SHORT).show();
+            public void onItemReorder(@NonNull MonthItem item, int fromPos, int toPos) {
+                Snackbar.make(view, "Month moved from position " + fromPos + " to "
+                        + toPos, Snackbar.LENGTH_SHORT).show();
             }
         });
     }
 
     @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.recycler_drag_menu) {
             mGestureManager.setManualDragEnabled(!mGestureManager.isManualDragEnabled());
         }

@@ -1,6 +1,7 @@
 package com.thesurix.example.gesturerecycler.adapter;
 
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,23 +15,28 @@ public class MonthsAdapter extends GestureAdapter<MonthItem, GestureViewHolder<M
 
     private final int mItemResId;
 
-    public MonthsAdapter(@LayoutRes final int itemResId) {
+    public MonthsAdapter(@LayoutRes int itemResId) {
         mItemResId = itemResId;
     }
 
+    @NonNull
     @Override
-    public GestureViewHolder<MonthItem> onCreateViewHolder(final ViewGroup parent, final int viewType) {
+    public GestureViewHolder<MonthItem> onCreateViewHolder(
+            @NonNull ViewGroup parent,
+            int viewType
+    ) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if (viewType == MonthItem.MonthItemType.MONTH.ordinal()) {
-            final View itemView = LayoutInflater.from(parent.getContext()).inflate(mItemResId, parent, false);
+            View itemView = inflater.inflate(mItemResId, parent, false);
             return new MonthViewHolder(itemView);
         } else {
-            final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_item, parent, false);
+            View itemView = inflater.inflate(R.layout.header_item, parent, false);
             return new HeaderViewHolder(itemView);
         }
     }
 
     @Override
-    public int getItemViewType(final int position) {
+    public int getItemViewType(int position) {
         return getItem(position).getType().ordinal();
     }
 }

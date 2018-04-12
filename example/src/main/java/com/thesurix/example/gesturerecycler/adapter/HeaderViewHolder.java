@@ -1,5 +1,6 @@
 package com.thesurix.example.gesturerecycler.adapter;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,13 +12,12 @@ import com.thesurix.gesturerecycler.GestureViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class HeaderViewHolder extends GestureViewHolder<MonthItem> {
 
     @BindView(R.id.header_text)
     TextView mHeaderText;
 
-    public HeaderViewHolder(final View view) {
+    public HeaderViewHolder(@NonNull View view) {
         super(view);
         ButterKnife.bind(this, view);
     }

@@ -11,12 +11,12 @@ public class GestureListener implements GestureAdapter.OnGestureListener {
 
     private final ItemTouchHelper mTouchHelper;
 
-    public GestureListener(final ItemTouchHelper touchHelper) {
+    public GestureListener(ItemTouchHelper touchHelper) {
         mTouchHelper = touchHelper;
     }
 
     @Override
-    public void onStartDrag(final GestureViewHolder viewHolder) {
+    public void onStartDrag(GestureViewHolder viewHolder) {
         mTouchHelper.startDrag(viewHolder);
     }
 }

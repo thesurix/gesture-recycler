@@ -1,6 +1,8 @@
 package com.thesurix.gesturerecycler.transactions;
 
 
+import android.support.annotation.NonNull;
+
 import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureViewHolder;
 
@@ -13,7 +15,10 @@ public class InsertTransaction<T> implements AdapterTransaction {
     private final T mItem;
     private final int mPosition;
 
-    public InsertTransaction(final GestureAdapter<T, ? extends GestureViewHolder> adapter, final T item, final int position) {
+    public InsertTransaction(
+            GestureAdapter<T, ? extends GestureViewHolder> adapter,
+            @NonNull T item,
+            int position) {
         mAdapter = adapter;
         mItem = item;
         mPosition = position;
@@ -28,8 +33,8 @@ public class InsertTransaction<T> implements AdapterTransaction {
 
     @Override
     public boolean revert() {
-        final T item = mAdapter.getData().remove(mPosition);
-        final boolean success = item != null;
+        T item = mAdapter.getData().remove(mPosition);
+        boolean success = item != null;
         if (success) {
             mAdapter.notifyItemRemoved(mPosition);
         }

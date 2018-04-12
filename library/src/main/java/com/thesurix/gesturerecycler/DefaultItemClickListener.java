@@ -1,5 +1,7 @@
 package com.thesurix.gesturerecycler;
 
+import android.support.annotation.NonNull;
+
 /**
  * Default implementation of the {@link RecyclerItemTouchListener.ItemClickListener}.
  * @author thesurix
@@ -7,17 +9,16 @@ package com.thesurix.gesturerecycler;
 public class DefaultItemClickListener<T> implements RecyclerItemTouchListener.ItemClickListener<T> {
 
     @Override
-    public boolean onItemClick(final T item, final int position) {
+    public boolean onItemClick(@NonNull T item, int position) {
         return false;
     }
 
     @Override
-    public void onItemLongPress(final T item, final int position) {
-
+    public void onItemLongPress(@NonNull T item, int position) {
     }
 
     @Override
-    public boolean onDoubleTap(final T item, final int position) {
+    public boolean onDoubleTap(@NonNull T item, int position) {
         return false;
     }
 }

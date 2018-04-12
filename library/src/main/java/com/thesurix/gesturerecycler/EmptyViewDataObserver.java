@@ -17,21 +17,21 @@ class EmptyViewDataObserver extends RecyclerView.AdapterDataObserver {
     }
 
     @Override
-    public void onItemRangeInserted(final int positionStart, final int itemCount) {
+    public void onItemRangeInserted(int positionStart, int itemCount) {
         updateEmptyViewState();
     }
 
     @Override
-    public void onItemRangeRemoved(final int positionStart, final int itemCount) {
+    public void onItemRangeRemoved(int positionStart, int itemCount) {
         updateEmptyViewState();
     }
 
-    public void setEmptyView(final View emptyView) {
+    public void setEmptyView(View emptyView) {
         mEmptyView = emptyView;
         updateEmptyViewState();
     }
 
-    public void setRecyclerView(final RecyclerView recyclerView) {
+    public void setRecyclerView(RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
         updateEmptyViewState();
     }

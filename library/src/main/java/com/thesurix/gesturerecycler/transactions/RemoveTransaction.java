@@ -13,7 +13,10 @@ public class RemoveTransaction<T> implements AdapterTransaction {
     private T mItem;
     private final int mPosition;
 
-    public RemoveTransaction(final GestureAdapter<T, ? extends GestureViewHolder> adapter, final int position) {
+    public RemoveTransaction(
+            GestureAdapter<T, ? extends GestureViewHolder> adapter,
+            int position
+    ) {
         mAdapter = adapter;
         mPosition = position;
     }
@@ -21,7 +24,7 @@ public class RemoveTransaction<T> implements AdapterTransaction {
     @Override
     public boolean perform() {
         mItem = mAdapter.getData().remove(mPosition);
-        final boolean success = mItem != null;
+        boolean success = mItem != null;
         if (success) {
             mAdapter.notifyItemRemoved(mPosition);
         }
