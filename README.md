@@ -35,13 +35,13 @@ dependencies {
 
 ```java
 // Define your RecyclerView and adapter as usually
-final LinearLayoutManager manager = new LinearLayoutManager(getContext());
+LinearLayoutManager manager = new LinearLayoutManager(getContext());
 recyclerView.setHasFixedSize(true);
 recyclerView.setLayoutManager(manager);
 
 // Extend GestureAdapter and write your own
 // ViewHolder items must extend GestureViewHolder
-final MonthsAdapter adapter = new MonthsAdapter(getContext(), R.layout.linear_item);
+MonthsAdapter adapter = new MonthsAdapter(R.layout.linear_item);
 adapter.setData(getMonths());
 recyclerView.setAdapter(adapter);
 ```
@@ -100,11 +100,11 @@ GestureManager gestureManager = new GestureManager.Builder(mRecyclerView)
 ```java
 adapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>() {
             @Override
-            public void onItemRemoved(final MonthItem item, final int position) {
+            public void onItemRemoved(@NonNull MonthItem item, int position) {
             }
 
             @Override
-            public void onItemReorder(final MonthItem item, final int fromPos, final int toPos) {
+            public void onItemReorder(@NonNull MonthItem item, int fromPos, int toPos) {
             }
         });
 ```
@@ -128,17 +128,17 @@ adapter.setData(months)
 // Attach DefaultItemClickListener or implement RecyclerItemTouchListener.ItemClickListener
 recyclerView.addOnItemTouchListener(new RecyclerItemTouchListener<>(new DefaultItemClickListener<CustomItem>() {
             @Override
-            public boolean onItemClick(final CustomItem item, final int position) {
+            public boolean onItemClick(@NonNull CustomItem item, int position) {
                 // return true if the event is consumed
                 return false;
             }
 
             @Override
-            public void onItemLongPress(final CustomItem item, final int position) {
+            public void onItemLongPress(@NonNull CustomItem item, int position) {
             }
 
             @Override
-            public boolean onDoubleTap(final CustomItem item, final int position) {
+            public boolean onDoubleTap(@NonNull CustomItem item, int position) {
                 // return true if the event is consumed
                 return false;
             }
@@ -167,7 +167,7 @@ recyclerView.addOnItemTouchListener(new RecyclerItemTouchListener<>(new DefaultI
 ```
 ```java
 // Pass null to disable empty view
-final View emptyView = view.findViewById(R.id.empty_view);
+View emptyView = view.findViewById(R.id.empty_view);
 adapter.setEmptyView(emptyView);
 ```
 ### Undo:
