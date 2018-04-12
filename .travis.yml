@@ -1,0 +1,22 @@
+language: android
+android:
+  components:
+    - tools
+    - build-tools-27.0.3
+    - android-27
+before_install:
+    - yes | sdkmanager "platforms;android-27"
+    - chmod +x gradlew
+jdk:
+    - openjdk8
+script:
+    - ./gradlew assemble check
+notifications:
+  email: false
+before_cache:
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
