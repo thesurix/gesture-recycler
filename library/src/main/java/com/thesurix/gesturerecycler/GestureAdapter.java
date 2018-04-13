@@ -190,11 +190,10 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>>
     }
 
     /**
-     * Returns adapter's data.
-     * @return adapter's data
+     * @return copy of adapter's data
      */
     public List<T> getData() {
-        return mData;
+        return new ArrayList<>(mData);
     }
 
     /**
