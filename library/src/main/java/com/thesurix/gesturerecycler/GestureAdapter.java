@@ -138,14 +138,12 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>>
 
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
         mEmptyViewDataObserver.setRecyclerView(recyclerView);
         recyclerView.addOnAttachStateChangeListener(mAttachListener);
     }
 
     @Override
     public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView);
         mEmptyViewDataObserver.setRecyclerView(null);
         recyclerView.removeOnAttachStateChangeListener(mAttachListener);
         resetTransactions();
@@ -183,8 +181,9 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>>
      * Clears data.
      */
     public void clearData() {
+        int size = getItemCount();
         mData.clear();
-        notifyDataSetChanged();
+        notifyItemRangeRemoved(0, size);
 
         resetTransactions();
     }
@@ -193,7 +192,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>>
      * @return copy of adapter's data
      */
     public List<T> getData() {
-        return new ArrayList<>(mData);
+        return mData;
     }
 
     /**

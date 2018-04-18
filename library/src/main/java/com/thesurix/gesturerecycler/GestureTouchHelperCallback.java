@@ -73,7 +73,7 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
                 backgroundView.setVisibility(View.VISIBLE);
             }
 
-            itemViewHolder.onItemSelect();
+            itemViewHolder.onItemSelected();
         }
     }
 
@@ -101,7 +101,7 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
         mGestureAdapter.onItemMoved();
         if (viewHolder instanceof GestureViewHolder) {
             GestureViewHolder itemViewHolder = (GestureViewHolder) viewHolder;
-            itemViewHolder.onItemClear();
+            itemViewHolder.onItemSelectionClear();
 
             View backgroundView = itemViewHolder.getBackgroundView();
             if (backgroundView != null) {

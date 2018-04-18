@@ -79,13 +79,13 @@ public abstract class GestureViewHolder<T> extends RecyclerView.ViewHolder {
     /**
      * Indicates that view is selected.
      */
-    public void onItemSelect() {
+    public void onItemSelected() {
     }
 
     /**
      * Indicates that view has no selection.
      */
-    public void onItemClear() {
+    public void onItemSelectionClear() {
     }
 
     /**

@@ -2,20 +2,15 @@ package com.thesurix.gesturerecycler.transactions;
 
 
 import com.thesurix.gesturerecycler.GestureAdapter;
-import com.thesurix.gesturerecycler.GestureViewHolder;
 
 public class MoveTransaction <T> implements AdapterTransaction {
 
-    private final GestureAdapter<T, ? extends GestureViewHolder> mAdapter;
+    private final GestureAdapter<T, ?> mAdapter;
     private final int mFromPosition;
     private final int mToPosition;
     private T mItem;
 
-    public MoveTransaction(
-            GestureAdapter<T, ? extends GestureViewHolder> adapter,
-            int fromPosition,
-            int toPosition
-    ) {
+    public MoveTransaction(GestureAdapter<T, ?> adapter, int fromPosition, int toPosition) {
         mAdapter = adapter;
         mFromPosition = fromPosition;
         mToPosition = toPosition;

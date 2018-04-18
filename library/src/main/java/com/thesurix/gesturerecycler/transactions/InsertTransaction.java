@@ -4,21 +4,17 @@ package com.thesurix.gesturerecycler.transactions;
 import android.support.annotation.NonNull;
 
 import com.thesurix.gesturerecycler.GestureAdapter;
-import com.thesurix.gesturerecycler.GestureViewHolder;
 
 /**
  * @author thesurix
  */
 public class InsertTransaction<T> implements AdapterTransaction {
 
-    private final GestureAdapter<T, ? extends GestureViewHolder> mAdapter;
+    private final GestureAdapter<T, ?> mAdapter;
     private final T mItem;
     private final int mPosition;
 
-    public InsertTransaction(
-            GestureAdapter<T, ? extends GestureViewHolder> adapter,
-            @NonNull T item,
-            int position) {
+    public InsertTransaction(GestureAdapter<T, ?> adapter, @NonNull T item, int position) {
         mAdapter = adapter;
         mItem = item;
         mPosition = position;

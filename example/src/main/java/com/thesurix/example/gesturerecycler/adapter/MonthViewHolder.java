@@ -48,15 +48,13 @@ public class MonthViewHolder extends GestureViewHolder<MonthItem> {
 
     @Override
     public void bindHolder(MonthItem monthItem) {
-        if (monthItem.getType() == MonthItem.MonthItemType.MONTH) {
-            final Month month = (Month) monthItem;
-            mMonthText.setText(month.getName());
+        Month month = (Month) monthItem;
+        mMonthText.setText(month.getName());
 
-            Glide.with(getContext())
-                    .load(month.getDrawableId())
-                    .apply(RequestOptions.centerCropTransform())
-                    .into(mMonthPicture);
-        }
+        Glide.with(getContext())
+                .load(month.getDrawableId())
+                .apply(RequestOptions.centerCropTransform())
+                .into(mMonthPicture);
     }
 
     @Nullable
@@ -77,7 +75,7 @@ public class MonthViewHolder extends GestureViewHolder<MonthItem> {
     }
 
     @Override
-    public void onItemSelect() {
+    public void onItemSelected() {
         int textColorFrom = ContextCompat.getColor(getContext(), android.R.color.white);
         int textColorTo = ContextCompat.getColor(getContext(), R.color.indigo_500);
         ValueAnimator textAnimation = ValueAnimator.ofObject(new ArgbEvaluator(),
@@ -97,7 +95,7 @@ public class MonthViewHolder extends GestureViewHolder<MonthItem> {
     }
 
     @Override
-    public void onItemClear() {
+    public void onItemSelectionClear() {
         int textColorFrom = ContextCompat.getColor(getContext(), R.color.indigo_500);
         int textColorTo = ContextCompat.getColor(getContext(), android.R.color.white);
         ValueAnimator textAnimation = ValueAnimator.ofObject(new ArgbEvaluator(),
@@ -114,6 +112,13 @@ public class MonthViewHolder extends GestureViewHolder<MonthItem> {
         backgroundAnimation.addUpdateListener(getBackgroundAnimatorListener(mMonthText,
                 backgroundAnimation));
         backgroundAnimation.start();
+    }
+
+    @Override
+    public void unbindHolder() {
+        if (getForegroundView() != null) {
+            getForegroundView().setTranslationX(0f);
+        }
     }
 
     @Override

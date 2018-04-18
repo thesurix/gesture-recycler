@@ -2,21 +2,17 @@ package com.thesurix.gesturerecycler.transactions;
 
 
 import com.thesurix.gesturerecycler.GestureAdapter;
-import com.thesurix.gesturerecycler.GestureViewHolder;
 
 /**
  * @author thesurix
  */
 public class RemoveTransaction<T> implements AdapterTransaction {
 
-    private final GestureAdapter<T, ? extends GestureViewHolder> mAdapter;
+    private final GestureAdapter<T, ?> mAdapter;
     private T mItem;
     private final int mPosition;
 
-    public RemoveTransaction(
-            GestureAdapter<T, ? extends GestureViewHolder> adapter,
-            int position
-    ) {
+    public RemoveTransaction(GestureAdapter<T, ?> adapter, int position) {
         mAdapter = adapter;
         mPosition = position;
     }

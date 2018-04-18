@@ -24,10 +24,8 @@ public class HeaderViewHolder extends GestureViewHolder<MonthItem> {
 
     @Override
     public void bindHolder(MonthItem monthItem) {
-        if (monthItem.getType() == MonthItem.MonthItemType.MONTH) {
-            final MonthHeader monthHeader = (MonthHeader) monthItem;
-            mHeaderText.setText(monthHeader.getName());
-        }
+        MonthHeader monthHeader = (MonthHeader) monthItem;
+        mHeaderText.setText(monthHeader.getName());
     }
 
     @Override
