@@ -29,6 +29,24 @@ import java.util.List;
 public abstract class GestureAdapter<T, K extends GestureViewHolder<T>>
         extends RecyclerView.Adapter<K> {
 
+    /** Delegate for manage visibility for empty view */
+    public interface OnEmptyViewVisibilityDelegate {
+
+        /**
+         * Called when adapter have no data and empty view needs to be shown
+         * @param emptyView view to show
+         * @param recyclerView root view for this adapter
+         * */
+        void onShow(@NonNull View emptyView, @NonNull RecyclerView recyclerView);
+
+        /**
+         * Called when adapter have data and empty view needs to be hidden
+         * @param emptyView view to show
+         * @param recyclerView root view for this adapter
+         * */
+        void onHide(@NonNull View emptyView, @NonNull RecyclerView recyclerView);
+    }
+
     /** Listener for data changes inside adapter */
     public interface OnDataChangeListener<T> {
 
@@ -263,7 +281,20 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>>
      * @param emptyView view to show
      */
     public void setEmptyView(@Nullable View emptyView) {
-        mEmptyViewDataObserver.setEmptyView(emptyView);
+        setEmptyView(emptyView, null);
+    }
+
+    /**
+     * Sets empty view. Empty view is used when adapter has no data.
+     * Pass null to disable empty view feature.
+     * @param emptyView view to show
+     * @param delegate delegate for managing empty view visibility
+     */
+    public void setEmptyView(
+            @Nullable View emptyView,
+            @Nullable OnEmptyViewVisibilityDelegate delegate
+    ) {
+        mEmptyViewDataObserver.setEmptyView(emptyView, delegate);
     }
 
     /**
