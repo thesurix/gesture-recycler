@@ -17,37 +17,22 @@ import com.thesurix.example.gesturerecycler.model.Month;
 import com.thesurix.example.gesturerecycler.model.MonthItem;
 import com.thesurix.gesturerecycler.GestureViewHolder;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class MonthViewHolder extends GestureViewHolder<MonthItem> {
 
     private static final int SELECT_DURATION_IN_MS = 250;
 
-    @BindView(R.id.month_text)
-    TextView mMonthText;
-
-    @BindView(R.id.month_image)
-    ImageView mMonthPicture;
-
-    @BindView(R.id.mont_drag)
-    ImageView mItemDrag;
-
-    @Nullable
-    @BindView(R.id.foreground)
-    View mForegroundView;
-
-    @Nullable
-    @BindView(R.id.month_background_stub)
-    ViewStub mBackgroundView;
+    TextView mMonthText = findViewById(R.id.month_text);
+    ImageView mMonthPicture = findViewById(R.id.month_image);
+    ImageView mItemDrag = findViewById(R.id.mont_drag);
+    @Nullable View mForegroundView = findViewById(R.id.foreground);
+    @Nullable ViewStub mBackgroundView = findViewById(R.id.month_background_stub);
 
     public MonthViewHolder(@NonNull View view) {
         super(view);
-        ButterKnife.bind(this, view);
     }
 
     @Override
-    public void bindHolder(MonthItem monthItem) {
+    public void bindHolder(@NonNull MonthItem monthItem) {
         Month month = (Month) monthItem;
         mMonthText.setText(month.getName());
 
@@ -63,6 +48,7 @@ public class MonthViewHolder extends GestureViewHolder<MonthItem> {
         return mItemDrag;
     }
 
+    @NonNull
     @Override
     public View getForegroundView() {
         return mForegroundView == null ? super.getForegroundView() : mForegroundView;
@@ -116,9 +102,7 @@ public class MonthViewHolder extends GestureViewHolder<MonthItem> {
 
     @Override
     public void unbindHolder() {
-        if (getForegroundView() != null) {
-            getForegroundView().setTranslationX(0f);
-        }
+        getForegroundView().setTranslationX(0f);
     }
 
     @Override

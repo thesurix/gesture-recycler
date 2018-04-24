@@ -1,6 +1,7 @@
 package com.thesurix.gesturerecycler;
 
 import android.content.Context;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -34,11 +35,20 @@ public abstract class GestureViewHolder<T> extends RecyclerView.ViewHolder {
     }
 
     /**
+     * Method for simply finding view in view holder hierarchy.
+     * @param id the ID to search for
+     * @see android.view.View#findViewById(int)
+     * @see android.view.ViewGroup#findViewById(int)
+     * */
+    @Nullable public <V extends View> V findViewById(@IdRes int id) {
+        return (V) itemView.findViewById(id);
+    }
+
+    /**
      * Returns view that can spawn drag gesture. If there is no view simply return null.
      * @return view that can spawn drag gesture
      */
-    @Nullable
-    public View getDraggableView() {
+    @Nullable public View getDraggableView() {
         return null;
     }
 
@@ -47,7 +57,7 @@ public abstract class GestureViewHolder<T> extends RecyclerView.ViewHolder {
      * override this method to use background view feature in case of swipe gestures.
      * @return top view
      */
-    public View getForegroundView() {
+    @NonNull public View getForegroundView() {
         return itemView;
     }
 
@@ -55,8 +65,7 @@ public abstract class GestureViewHolder<T> extends RecyclerView.ViewHolder {
      * Returns background view which is visible when foreground view is partially or fully swiped.
      * @return background view
      */
-    @Nullable
-    public View getBackgroundView() {
+    @Nullable public View getBackgroundView() {
         return null;
     }
 
@@ -107,5 +116,5 @@ public abstract class GestureViewHolder<T> extends RecyclerView.ViewHolder {
      *
      * @param t model taken by position of holder from adapter's data collection
      * */
-    public abstract void bindHolder(T t);
+    public abstract void bindHolder(@NonNull T t);
 }
