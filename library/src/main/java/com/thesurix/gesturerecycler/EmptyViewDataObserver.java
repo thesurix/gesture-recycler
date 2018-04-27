@@ -1,5 +1,6 @@
 package com.thesurix.gesturerecycler;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -8,8 +9,9 @@ import android.view.View;
  */
 class EmptyViewDataObserver extends RecyclerView.AdapterDataObserver {
 
-    private RecyclerView mRecyclerView;
-    private View mEmptyView;
+    @Nullable private RecyclerView mRecyclerView;
+    @Nullable private View mEmptyView;
+    @Nullable private GestureAdapter.OnEmptyViewVisibilityDelegate mVisibilityDelegate;
 
     @Override
     public void onChanged() {
@@ -17,21 +19,25 @@ class EmptyViewDataObserver extends RecyclerView.AdapterDataObserver {
     }
 
     @Override
-    public void onItemRangeInserted(final int positionStart, final int itemCount) {
+    public void onItemRangeInserted(int positionStart, int itemCount) {
         updateEmptyViewState();
     }
 
     @Override
-    public void onItemRangeRemoved(final int positionStart, final int itemCount) {
+    public void onItemRangeRemoved(int positionStart, int itemCount) {
         updateEmptyViewState();
     }
 
-    public void setEmptyView(final View emptyView) {
+    public void setEmptyView(
+            @Nullable View emptyView,
+            @Nullable GestureAdapter.OnEmptyViewVisibilityDelegate delegate
+    ) {
         mEmptyView = emptyView;
+        mVisibilityDelegate = delegate;
         updateEmptyViewState();
     }
 
-    public void setRecyclerView(final RecyclerView recyclerView) {
+    public void setRecyclerView(@Nullable RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
         updateEmptyViewState();
     }
@@ -39,11 +45,19 @@ class EmptyViewDataObserver extends RecyclerView.AdapterDataObserver {
     private void updateEmptyViewState() {
         if (mEmptyView != null && mRecyclerView != null) {
             if (mRecyclerView.getAdapter().getItemCount() == 0) {
-                mEmptyView.setVisibility(View.VISIBLE);
-                mRecyclerView.setVisibility(View.GONE);
+                if (mVisibilityDelegate == null) {
+                    mEmptyView.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                } else {
+                    mVisibilityDelegate.onShow(mEmptyView, mRecyclerView);
+                }
             } else {
-                mEmptyView.setVisibility(View.GONE);
-                mRecyclerView.setVisibility(View.VISIBLE);
+                if (mVisibilityDelegate == null) {
+                    mEmptyView.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+                } else {
+                    mVisibilityDelegate.onHide(mEmptyView, mRecyclerView);
+                }
             }
         }
     }

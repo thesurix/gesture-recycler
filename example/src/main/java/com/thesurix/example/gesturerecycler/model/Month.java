@@ -8,7 +8,7 @@ public class Month implements MonthItem {
     private String mName;
     private int mDrawableId;
 
-    public Month(final String name, @DrawableRes final int drawableId) {
+    public Month(String name, @DrawableRes int drawableId) {
         mName = name;
         mDrawableId = drawableId;
     }

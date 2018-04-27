@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:orientation="horizontal"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/linear_item_height"
-    android:padding="@dimen/remove_item_padding"
-    android:background="@color/red_500">
+    android:background="@color/red_500"
+    android:orientation="horizontal"
+    android:padding="@dimen/remove_item_padding">
 
     <ImageView
         android:id="@+id/remove_del_view"
         android:layout_width="@dimen/remove_item_icon_size"
         android:layout_height="@dimen/remove_item_icon_size"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_ok"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"/>
 
 </RelativeLayout>

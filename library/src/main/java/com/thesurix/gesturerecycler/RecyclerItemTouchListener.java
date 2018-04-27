@@ -24,14 +24,14 @@ public class RecyclerItemTouchListener<T> extends RecyclerView.SimpleOnItemTouch
          * @param position item's position
          * @return true if the event is consumed, else false
          */
-        boolean onItemClick(T item, int position);
+        boolean onItemClick(@NonNull T item, int position);
 
         /**
          * Called when a long press occurs on a specified item.
          * @param item pressed item
          * @param position item's position
          */
-        void onItemLongPress(T item, int position);
+        void onItemLongPress(@NonNull T item, int position);
 
         /**
          * Called when a double tap occurs on a specified item.
@@ -39,7 +39,7 @@ public class RecyclerItemTouchListener<T> extends RecyclerView.SimpleOnItemTouch
          * @param position item's position
          * @return true if the event is consumed, else false
          */
-        boolean onDoubleTap(T item, int position);
+        boolean onDoubleTap(@NonNull T item, int position);
     }
 
     private GestureDetector mGestureDetector;
@@ -49,19 +49,21 @@ public class RecyclerItemTouchListener<T> extends RecyclerView.SimpleOnItemTouch
      * Constructs {@link RecyclerView} touch listener.
      * @param listener listener for item's click events
      */
-    public RecyclerItemTouchListener(@NonNull final ItemClickListener<T> listener) {
+    public RecyclerItemTouchListener(@NonNull ItemClickListener<T> listener) {
         mGestureClickListener  = new GestureClickListener<>(listener);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public boolean onInterceptTouchEvent(final RecyclerView view, final MotionEvent e) {
-        final View childView = view.findChildViewUnder(e.getX(), e.getY());
+    public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
+        View childView = view.findChildViewUnder(e.getX(), e.getY());
         if (childView != null) {
-            final int childPosition = view.getChildAdapterPosition(childView);
-            final RecyclerView.Adapter adapter = view.getAdapter();
+            int childPosition = view.getChildAdapterPosition(childView);
+            RecyclerView.Adapter adapter = view.getAdapter();
             if (adapter instanceof GestureAdapter) {
-                final GestureAdapter<T, ?> gestureAdapter = (GestureAdapter) adapter;
-                mGestureClickListener.setTouchedItem(gestureAdapter.getItem(childPosition), childPosition);
+                GestureAdapter<T, ?> gestureAdapter = (GestureAdapter) adapter;
+                mGestureClickListener.setTouchedItem(gestureAdapter.getItem(childPosition),
+                        childPosition);
             }
 
             return getGestureDetector(view.getContext()).onTouchEvent(e);
@@ -70,7 +72,7 @@ public class RecyclerItemTouchListener<T> extends RecyclerView.SimpleOnItemTouch
         return false;
     }
 
-    private GestureDetector getGestureDetector(final Context context) {
+    private GestureDetector getGestureDetector(Context context) {
         if (mGestureDetector == null) {
             mGestureDetector = new GestureDetector(context, mGestureClickListener);
         }
@@ -85,26 +87,26 @@ public class RecyclerItemTouchListener<T> extends RecyclerView.SimpleOnItemTouch
         private T item;
         private int viewPosition;
 
-        GestureClickListener(final ItemClickListener<T> listener) {
+        GestureClickListener(ItemClickListener<T> listener) {
             this.listener = listener;
         }
 
         @Override
-        public boolean onSingleTapConfirmed(final MotionEvent e) {
+        public boolean onSingleTapConfirmed(MotionEvent e) {
             return listener.onItemClick(item, viewPosition);
         }
 
         @Override
-        public void onLongPress(final MotionEvent e) {
+        public void onLongPress(MotionEvent e) {
             listener.onItemLongPress(item, viewPosition);
         }
 
         @Override
-        public boolean onDoubleTap(final MotionEvent e) {
+        public boolean onDoubleTap(MotionEvent e) {
             return listener.onDoubleTap(item, viewPosition);
         }
 
-        void setTouchedItem(final T item, final int viewPosition) {
+        void setTouchedItem(T item, int viewPosition) {
             this.item = item;
             this.viewPosition = viewPosition;
         }

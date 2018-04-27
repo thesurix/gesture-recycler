@@ -1,18 +1,17 @@
 package com.thesurix.gesturerecycler.transactions;
 
 import com.thesurix.gesturerecycler.GestureAdapter;
-import com.thesurix.gesturerecycler.GestureViewHolder;
 
 /**
  * @author thesurix
  */
 public class RevertReorderTransaction<T> implements AdapterTransaction {
 
-    private final GestureAdapter<T, ? extends GestureViewHolder> mAdapter;
+    private final GestureAdapter<T, ?> mAdapter;
     private final int mFrom;
     private final int mTo;
 
-    public RevertReorderTransaction(final GestureAdapter<T, ? extends GestureViewHolder> adapter, final int from, final int to) {
+    public RevertReorderTransaction(GestureAdapter<T, ?> adapter, int from, int to) {
         mAdapter = adapter;
         mFrom = from;
         mTo = to;
@@ -25,7 +24,7 @@ public class RevertReorderTransaction<T> implements AdapterTransaction {
 
     @Override
     public boolean revert() {
-        final T item = mAdapter.getData().remove(mTo);
+        T item = mAdapter.getData().remove(mTo);
         if (item != null) {
             mAdapter.notifyItemRemoved(mTo);
             mAdapter.getData().add(mFrom, item);

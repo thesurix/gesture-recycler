@@ -4,7 +4,7 @@ public class MonthHeader implements MonthItem {
 
     private String mName;
 
-    public MonthHeader(final String name) {
+    public MonthHeader(String name) {
         mName = name;
     }
 

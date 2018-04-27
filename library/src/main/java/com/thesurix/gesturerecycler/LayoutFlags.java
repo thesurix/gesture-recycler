@@ -8,17 +8,18 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 /**
- * Enum with predefined gesture flags for various layout managers, see {@link RecyclerView.LayoutManager}
+ * Enum with predefined gesture flags for various layout managers
+ * @see RecyclerView.LayoutManager
  * @author thesurix
  */
 enum LayoutFlags {
 
     LINEAR {
         @Override
-        int getDragFlags(final RecyclerView.LayoutManager layout) {
+        int getDragFlags(RecyclerView.LayoutManager layout) {
             int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
 
-            final LinearLayoutManager linearLayout = (LinearLayoutManager) layout;
+            LinearLayoutManager linearLayout = (LinearLayoutManager) layout;
             if (linearLayout.getOrientation() == LinearLayoutManager.HORIZONTAL) {
                 dragFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
             }
@@ -26,10 +27,10 @@ enum LayoutFlags {
         }
 
         @Override
-        int getSwipeFlags(final RecyclerView.LayoutManager layout) {
+        int getSwipeFlags(RecyclerView.LayoutManager layout) {
             int swipeFlags = ItemTouchHelper.RIGHT;
 
-            final LinearLayoutManager linearLayout = (LinearLayoutManager) layout;
+            LinearLayoutManager linearLayout = (LinearLayoutManager) layout;
             if (linearLayout.getOrientation() == LinearLayoutManager.HORIZONTAL) {
                 swipeFlags = ItemTouchHelper.UP;
             }
@@ -38,15 +39,18 @@ enum LayoutFlags {
     },
     GRID {
         @Override
-        int getDragFlags(final RecyclerView.LayoutManager layout) {
-            return ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+        int getDragFlags(RecyclerView.LayoutManager layout) {
+            return ItemTouchHelper.UP
+                    | ItemTouchHelper.DOWN
+                    | ItemTouchHelper.LEFT
+                    | ItemTouchHelper.RIGHT;
         }
 
         @Override
-        int getSwipeFlags(final RecyclerView.LayoutManager layout) {
+        int getSwipeFlags(RecyclerView.LayoutManager layout) {
             int swipeFlags = ItemTouchHelper.RIGHT;
 
-            final GridLayoutManager gridLayout = (GridLayoutManager) layout;
+            GridLayoutManager gridLayout = (GridLayoutManager) layout;
             if (gridLayout.getOrientation() == LinearLayoutManager.HORIZONTAL) {
                 swipeFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
             }
@@ -55,15 +59,18 @@ enum LayoutFlags {
     },
     STAGGERED {
         @Override
-        int getDragFlags(final RecyclerView.LayoutManager layout) {
-            return ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+        int getDragFlags(RecyclerView.LayoutManager layout) {
+            return ItemTouchHelper.UP
+                    | ItemTouchHelper.DOWN
+                    | ItemTouchHelper.LEFT
+                    | ItemTouchHelper.RIGHT;
         }
 
         @Override
-        int getSwipeFlags(final RecyclerView.LayoutManager layout) {
+        int getSwipeFlags(RecyclerView.LayoutManager layout) {
             int swipeFlags = ItemTouchHelper.RIGHT;
 
-            final StaggeredGridLayoutManager staggeredGridLayout = (StaggeredGridLayoutManager) layout;
+            StaggeredGridLayoutManager staggeredGridLayout = (StaggeredGridLayoutManager) layout;
             if (staggeredGridLayout.getOrientation() == StaggeredGridLayoutManager.HORIZONTAL) {
                 swipeFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
             }
@@ -76,12 +83,12 @@ enum LayoutFlags {
      * @param layout layout manager instance
      * @return drag flags
      */
-    abstract int getDragFlags(final RecyclerView.LayoutManager layout);
+    abstract int getDragFlags(RecyclerView.LayoutManager layout);
 
     /**
      * Returns swipe flags for the given layout manager.
      * @param layout layout manager instance
      * @return swipe flags
      */
-    abstract int getSwipeFlags(final RecyclerView.LayoutManager layout);
+    abstract int getSwipeFlags(RecyclerView.LayoutManager layout);
 }

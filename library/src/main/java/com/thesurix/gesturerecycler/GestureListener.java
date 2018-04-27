@@ -1,6 +1,7 @@
 package com.thesurix.gesturerecycler;
 
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 /**
@@ -9,14 +10,14 @@ import android.support.v7.widget.helper.ItemTouchHelper;
  */
 public class GestureListener implements GestureAdapter.OnGestureListener {
 
-    private final ItemTouchHelper mTouchHelper;
+    @NonNull private final ItemTouchHelper mTouchHelper;
 
-    public GestureListener(final ItemTouchHelper touchHelper) {
+    public GestureListener(@NonNull ItemTouchHelper touchHelper) {
         mTouchHelper = touchHelper;
     }
 
     @Override
-    public void onStartDrag(final GestureViewHolder viewHolder) {
+    public void onStartDrag(@NonNull GestureViewHolder viewHolder) {
         mTouchHelper.startDrag(viewHolder);
     }
 }

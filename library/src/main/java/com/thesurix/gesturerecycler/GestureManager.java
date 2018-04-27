@@ -12,14 +12,14 @@ public class GestureManager {
 
     private GestureTouchHelperCallback mTouchHelperCallback;
 
-    private GestureManager(final Builder builder) {
-        final GestureAdapter adapter = (GestureAdapter) builder.recyclerView.getAdapter();
+    private GestureManager(Builder builder) {
+        GestureAdapter adapter = (GestureAdapter) builder.recyclerView.getAdapter();
         mTouchHelperCallback = new GestureTouchHelperCallback(adapter);
         mTouchHelperCallback.setSwipeEnabled(builder.isSwipeEnabled);
         mTouchHelperCallback.setLongPressDragEnabled(builder.isDragEnabled);
         mTouchHelperCallback.setManualDragEnabled(builder.isManualDragEnabled);
 
-        final ItemTouchHelper touchHelper = new ItemTouchHelper(mTouchHelperCallback);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(mTouchHelperCallback);
         touchHelper.attachToRecyclerView(builder.recyclerView);
         adapter.setGestureListener(new GestureListener(touchHelper));
 
@@ -40,7 +40,7 @@ public class GestureManager {
      * Sets swipe gesture enabled or disabled.
      * @param enabled true to enable, false to disable
      */
-    public void setSwipeEnabled(final boolean enabled) {
+    public void setSwipeEnabled(boolean enabled) {
         mTouchHelperCallback.setSwipeEnabled(enabled);
     }
 
@@ -48,7 +48,7 @@ public class GestureManager {
      * Sets long press drag gesture enabled or disabled.
      * @param enabled true to enable, false to disable
      */
-    public void setLongPressDragEnabled(final boolean enabled) {
+    public void setLongPressDragEnabled(boolean enabled) {
         mTouchHelperCallback.setLongPressDragEnabled(enabled);
     }
 
@@ -56,7 +56,7 @@ public class GestureManager {
      * Sets manual drag gesture enabled or disabled.
      * @param enabled true to enable, false to disable
      */
-    public void setManualDragEnabled(final boolean enabled) {
+    public void setManualDragEnabled(boolean enabled) {
         mTouchHelperCallback.setManualDragEnabled(enabled);
     }
 
@@ -103,7 +103,7 @@ public class GestureManager {
          * Constructs {@link GestureManager} for the given RecyclerView.
          * @param recyclerView RecyclerView instance
          */
-        public Builder(@NonNull final RecyclerView recyclerView) {
+        public Builder(@NonNull RecyclerView recyclerView) {
             this.recyclerView = recyclerView;
         }
 
@@ -113,7 +113,7 @@ public class GestureManager {
          * @param enabled true to enable, false to disable
          * @return returns builder instance
          */
-        public Builder setSwipeEnabled(final boolean enabled) {
+        public Builder setSwipeEnabled(boolean enabled) {
             isSwipeEnabled = enabled;
             return this;
         }
@@ -124,7 +124,7 @@ public class GestureManager {
          * @param enabled true to enable, false to disable
          * @return returns builder instance
          */
-        public Builder setLongPressDragEnabled(final boolean enabled) {
+        public Builder setLongPressDragEnabled(boolean enabled) {
             isDragEnabled = enabled;
             return this;
         }
@@ -135,13 +135,14 @@ public class GestureManager {
          * @param enabled true to enable, false to disable
          * @return returns builder instance
          */
-        public Builder setManualDragEnabled(final boolean enabled) {
+        public Builder setManualDragEnabled(boolean enabled) {
             isManualDragEnabled = enabled;
             return this;
         }
 
         /**
-         * Sets flags for swipe and drag gesture. Do not set this flags if you want predefined flags for RecyclerView layout manager.
+         * Sets flags for swipe and drag gesture. Do not set this flags if you want predefined flags
+         * for RecyclerView layout manager.
          * See {@link ItemTouchHelper} flags.
          *
          * This method is deprecated, use {@link #setDragFlags(int)} or {@link #setSwipeFlags(int)}.
@@ -150,30 +151,32 @@ public class GestureManager {
          * @return returns builder instance
          */
         @Deprecated
-        public Builder setGestureFlags(final int swipeFlags, final int dragFlags) {
+        public Builder setGestureFlags(int swipeFlags, int dragFlags) {
             this.swipeFlags = swipeFlags;
             this.dragFlags = dragFlags;
             return this;
         }
 
         /**
-         * Sets flags for swipe gesture. Do not set this flags if you want predefined flags for RecyclerView layout manager.
+         * Sets flags for swipe gesture. Do not set this flags if you want predefined flags for
+         * RecyclerView layout manager.
          * See {@link ItemTouchHelper} flags.
          * @param flags flags for swipe gesture
          * @return returns builder instance
          */
-        public Builder setSwipeFlags(final int flags) {
+        public Builder setSwipeFlags(int flags) {
             swipeFlags = flags;
             return this;
         }
 
         /**
-         * Sets flags for drag gesture. Do not set this flags if you want predefined flags for RecyclerView layout manager.
+         * Sets flags for drag gesture. Do not set this flags if you want predefined flags for
+         * RecyclerView layout manager.
          * See {@link ItemTouchHelper} flags.
          * @param flags flags for drag gesture
          * @return returns builder instance
          */
-        public Builder setDragFlags(final int flags) {
+        public Builder setDragFlags(int flags) {
             dragFlags = flags;
             return this;
         }
@@ -188,17 +191,18 @@ public class GestureManager {
         }
 
         private void validateBuilder() {
-            final boolean hasAdapter = recyclerView.getAdapter() instanceof GestureAdapter;
+            boolean hasAdapter = recyclerView.getAdapter() instanceof GestureAdapter;
             if (!hasAdapter) {
-                throw new IllegalArgumentException("RecyclerView does not have adapter that extends " + GestureAdapter.class.getName());
+                throw new IllegalArgumentException("RecyclerView does not have adapter that " +
+                        "extends " + GestureAdapter.class.getName());
             }
 
             if (swipeFlags == INVALID_FLAG || dragFlags == INVALID_FLAG) {
                 if (recyclerView.getLayoutManager() == null) {
-                    throw new IllegalArgumentException("No layout manager for RecyclerView. Provide custom flags or attach layout manager to RecyclerView.");
+                    throw new IllegalArgumentException("No layout manager for RecyclerView. " +
+                            "Provide custom flags or attach layout manager to RecyclerView.");
                 }
             }
         }
     }
-
 }

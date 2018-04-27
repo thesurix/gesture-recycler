@@ -1,23 +1,25 @@
 package com.thesurix.example.gesturerecycler.adapter;
 
-import com.thesurix.example.gesturerecycler.R;
-import com.thesurix.gesturerecycler.GestureViewHolder;
-
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.thesurix.example.gesturerecycler.R;
+import com.thesurix.example.gesturerecycler.model.MonthHeader;
+import com.thesurix.example.gesturerecycler.model.MonthItem;
+import com.thesurix.gesturerecycler.GestureViewHolder;
 
+public class HeaderViewHolder extends GestureViewHolder<MonthItem> {
+    private TextView mHeaderText = findViewById(R.id.header_text);
 
-public class HeaderViewHolder extends GestureViewHolder {
-
-    @BindView(R.id.header_text)
-    TextView mHeaderText;
-
-    public HeaderViewHolder(final View view) {
+    public HeaderViewHolder(@NonNull View view) {
         super(view);
-        ButterKnife.bind(this, view);
+    }
+
+    @Override
+    public void bindHolder(@NonNull MonthItem monthItem) {
+        MonthHeader monthHeader = (MonthHeader) monthItem;
+        mHeaderText.setText(monthHeader.getName());
     }
 
     @Override

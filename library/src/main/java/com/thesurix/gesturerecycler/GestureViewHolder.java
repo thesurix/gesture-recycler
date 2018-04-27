@@ -1,5 +1,8 @@
 package com.thesurix.gesturerecycler;
 
+import android.content.Context;
+import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,18 +11,44 @@ import android.view.View;
  * Base view holder class for gesture compatible items.
  * @author thesurix
  */
-public abstract class GestureViewHolder extends RecyclerView.ViewHolder {
+public abstract class GestureViewHolder<T> extends RecyclerView.ViewHolder {
 
-    public GestureViewHolder(final View itemView) {
+    public GestureViewHolder(@NonNull View itemView) {
         super(itemView);
+    }
+
+    /**
+     * This method delegates release logic from
+     * {@link RecyclerView.Adapter#onViewRecycled(RecyclerView.ViewHolder)} into your
+     * {@code ViewHolder}. It's good place for release some listeners or something what have high
+     * in-memory weight (high resolution bitmap etc.) from a views
+     * */
+    public void unbindHolder() {
+    }
+
+    /**
+     * Simply getter for context from {@link #itemView}
+     * @return context from
+     * */
+    public Context getContext() {
+        return itemView.getContext();
+    }
+
+    /**
+     * Method for simply finding view in view holder hierarchy.
+     * @param id the ID to search for
+     * @see android.view.View#findViewById(int)
+     * @see android.view.ViewGroup#findViewById(int)
+     * */
+    @Nullable public <V extends View> V findViewById(@IdRes int id) {
+        return (V) itemView.findViewById(id);
     }
 
     /**
      * Returns view that can spawn drag gesture. If there is no view simply return null.
      * @return view that can spawn drag gesture
      */
-    @Nullable
-    public View getDraggableView() {
+    @Nullable public View getDraggableView() {
         return null;
     }
 
@@ -28,7 +57,7 @@ public abstract class GestureViewHolder extends RecyclerView.ViewHolder {
      * override this method to use background view feature in case of swipe gestures.
      * @return top view
      */
-    public View getForegroundView() {
+    @NonNull public View getForegroundView() {
         return itemView;
     }
 
@@ -36,8 +65,7 @@ public abstract class GestureViewHolder extends RecyclerView.ViewHolder {
      * Returns background view which is visible when foreground view is partially or fully swiped.
      * @return background view
      */
-    @Nullable
-    public View getBackgroundView() {
+    @Nullable public View getBackgroundView() {
         return null;
     }
 
@@ -46,7 +74,7 @@ public abstract class GestureViewHolder extends RecyclerView.ViewHolder {
      * Called only when getDraggableView() returns valid view.
      */
     public void showDraggableView() {
-        getDraggableView().setVisibility(View.VISIBLE);
+        if (getDraggableView() != null) getDraggableView().setVisibility(View.VISIBLE);
     }
 
     /**
@@ -54,18 +82,20 @@ public abstract class GestureViewHolder extends RecyclerView.ViewHolder {
      * Called only when getDraggableView() returns valid view.
      */
     public void hideDraggableView() {
-        getDraggableView().setVisibility(View.GONE);
+        if (getDraggableView() != null) getDraggableView().setVisibility(View.GONE);
     }
 
     /**
      * Indicates that view is selected.
      */
-    public void onItemSelect() {}
+    public void onItemSelected() {
+    }
 
     /**
      * Indicates that view has no selection.
      */
-    public void onItemClear() {}
+    public void onItemSelectionClear() {
+    }
 
     /**
      * Returns information if we can drag this view.
@@ -78,4 +108,13 @@ public abstract class GestureViewHolder extends RecyclerView.ViewHolder {
      * @return true if swipeable, false otherwise
      */
     public abstract boolean canSwipe();
+
+    /**
+     * This method delegates bind logic from
+     * {@link RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder, int)} into your
+     * {@code ViewHolder}
+     *
+     * @param t model taken by position of holder from adapter's data collection
+     * */
+    public abstract void bindHolder(@NonNull T t);
 }
