@@ -9,17 +9,11 @@ import com.thesurix.example.gesturerecycler.model.MonthHeader;
 import com.thesurix.example.gesturerecycler.model.MonthItem;
 import com.thesurix.gesturerecycler.GestureViewHolder;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class HeaderViewHolder extends GestureViewHolder<MonthItem> {
-
-    @BindView(R.id.header_text)
-    TextView mHeaderText;
+    private TextView mHeaderText = findViewById(R.id.header_text);
 
     public HeaderViewHolder(@NonNull View view) {
         super(view);
-        ButterKnife.bind(this, view);
     }
 
     @Override

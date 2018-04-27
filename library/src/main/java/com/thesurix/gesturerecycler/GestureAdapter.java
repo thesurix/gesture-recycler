@@ -82,7 +82,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder<T>>
      * Attempts to allocate larger arrays may result in
      * OutOfMemoryError: Requested array size exceeds VM limit
      * */
-    public final static int MAX_UNDO_STACK_SIZE = Integer.MAX_VALUE - 8;
+    public static final int MAX_UNDO_STACK_SIZE = Integer.MAX_VALUE - 8;
 
     private static final int INVALID_POSITION = -1;
 

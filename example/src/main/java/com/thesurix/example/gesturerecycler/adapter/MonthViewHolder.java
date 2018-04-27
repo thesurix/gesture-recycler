@@ -21,11 +21,11 @@ public class MonthViewHolder extends GestureViewHolder<MonthItem> {
 
     private static final int SELECT_DURATION_IN_MS = 250;
 
-    TextView mMonthText = findViewById(R.id.month_text);
-    ImageView mMonthPicture = findViewById(R.id.month_image);
-    ImageView mItemDrag = findViewById(R.id.mont_drag);
-    @Nullable View mForegroundView = findViewById(R.id.foreground);
-    @Nullable ViewStub mBackgroundView = findViewById(R.id.month_background_stub);
+    private TextView mMonthText = findViewById(R.id.month_text);
+    private ImageView mMonthPicture = findViewById(R.id.month_image);
+    private ImageView mItemDrag = findViewById(R.id.mont_drag);
+    private @Nullable View mForegroundView = findViewById(R.id.foreground);
+    private @Nullable ViewStub mBackgroundView = findViewById(R.id.month_background_stub);
 
     public MonthViewHolder(@NonNull View view) {
         super(view);

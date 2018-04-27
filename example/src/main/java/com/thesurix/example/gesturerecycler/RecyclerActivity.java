@@ -30,16 +30,22 @@ public class RecyclerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler);
 
-        int option = this.getIntent().getIntExtra(EXTRA_RECYCLER_OPTION,
+        int optionOrdinal = getIntent().getIntExtra(EXTRA_RECYCLER_OPTION,
                 RecyclerOption.LINEAR.ordinal());
+        RecyclerOption option = RecyclerOption.values()[optionOrdinal];
 
         Fragment fragment;
-        if (option == RecyclerOption.GRID.ordinal()) {
-            fragment = new GridRecyclerFragment();
-        } else if (option == RecyclerOption.EMPTY.ordinal()) {
-            fragment = new EmptyViewFragment();
-        } else {
-            fragment = new LinearRecyclerFragment();
+        switch (option) {
+            case GRID:
+                fragment = new GridRecyclerFragment();
+                break;
+            case EMPTY:
+                fragment = new EmptyViewFragment();
+                break;
+            default:
+            case LINEAR:
+                fragment = new LinearRecyclerFragment();
+                break;
         }
 
         getSupportFragmentManager()

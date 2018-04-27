@@ -9,9 +9,9 @@ import android.view.View;
  */
 class EmptyViewDataObserver extends RecyclerView.AdapterDataObserver {
 
-    private RecyclerView mRecyclerView;
-    private @Nullable View mEmptyView;
-    private @Nullable GestureAdapter.OnEmptyViewVisibilityDelegate mVisibilityDelegate;
+    @Nullable private RecyclerView mRecyclerView;
+    @Nullable private View mEmptyView;
+    @Nullable private GestureAdapter.OnEmptyViewVisibilityDelegate mVisibilityDelegate;
 
     @Override
     public void onChanged() {
@@ -28,10 +28,6 @@ class EmptyViewDataObserver extends RecyclerView.AdapterDataObserver {
         updateEmptyViewState();
     }
 
-    public void setEmptyView(@Nullable View emptyView) {
-        setEmptyView(emptyView, null);
-    }
-
     public void setEmptyView(
             @Nullable View emptyView,
             @Nullable GestureAdapter.OnEmptyViewVisibilityDelegate delegate
@@ -41,7 +37,7 @@ class EmptyViewDataObserver extends RecyclerView.AdapterDataObserver {
         updateEmptyViewState();
     }
 
-    public void setRecyclerView(RecyclerView recyclerView) {
+    public void setRecyclerView(@Nullable RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
         updateEmptyViewState();
     }
